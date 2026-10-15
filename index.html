@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>ProfitPilot – Calcolatore Prezzi & Profitti</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="ProfitPilot è un calcolatore universale di prezzi, margini, break-even e profitti per servizi, prodotti e abbonamenti."
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="pp-header">
+    <div class="pp-header-inner">
+      <h1>ProfitPilot</h1>
+      <p>Calcola prezzi, margini, break-even e profitti per qualsiasi servizio, prodotto o abbonamento.</p>
+    </div>
+  </header>
+
+  <main class="pp-main">
+    <section class="pp-layout">
+      <aside class="pp-sidebar">
+        <h2>Configurazione Offerta</h2>
+
+        <div class="pp-field">
+          <label for="offerName">Nome offerta</label>
+          <input id="offerName" type="text" placeholder="Es. Sito web base, Coaching mensile, Corso online" />
+        </div>
+
+        <div class="pp-field">
+          <label for="offerType">Tipo di offerta</label>
+          <select id="offerType">
+            <option value="hourly">Servizio a tariffa oraria</option>
+            <option value="project">Servizio a progetto</option>
+            <option value="product">Prodotto singolo</option>
+            <option value="subscription">Abbonamento / SaaS</option>
+          </select>
+        </div>
+
+        <hr />
+
+        <h3>Costi fissi mensili</h3>
+        <p class="pp-help">
+          Affitto, software, strumenti, marketing fisso, stipendi, ecc. Inserisci il totale mensile.
+        </p>
+        <div class="pp-field">
+          <label for="fixedCosts">Costi fissi mensili (€)</label>
+          <input id="fixedCosts" type="number" min="0" step="0.01" value="0" />
+        </div>
+
+        <h3>Costi variabili per unità</h3>
+        <p class="pp-help">
+          Costi che aumentano con ogni vendita/cliente: materiali, fee di piattaforma, tempo operativo, ecc.
+        </p>
+        <div class="pp-field">
+          <label for="variableCostPerUnit">Costi variabili per unità (€)</label>
+          <input id="variableCostPerUnit" type="number" min="0" step="0.01" value="0" />
+        </div>
+
+        <h3>Obiettivo di reddito</h3>
+        <p class="pp-help">
+          Quanto vuoi guadagnare al mese (prima delle tasse) con questa offerta.
+        </p>
+        <div class="pp-field">
+          <label for="targetIncome">Reddito mensile desiderato (€)</label>
+          <input id="targetIncome" type="number" min="0" step="0.01" value="2000" />
+        </div>
+
+        <hr />
+
+        <h3>Parametri specifici</h3>
+
+        <div id="hourlyFields" class="pp-conditional">
+          <div class="pp-field">
+            <label for="hoursPerMonth">Ore fatturabili al mese</label>
+            <input id="hoursPerMonth" type="number" min="1" step="1" value="80" />
+          </div>
+        </div>
+
+        <div id="projectFields" class="pp-conditional">
+          <div class="pp-field">
+            <label for="projectsPerMonth">Progetti al mese</label>
+            <input id="projectsPerMonth" type="number" min="1" step="1" value="4" />
+          </div>
+          <div class="pp-field">
+            <label for="hoursPerProject">Ore per progetto</label>
+            <input id="hoursPerProject" type="number" min="1" step="1" value="20" />
+          </div>
+        </div>
+
+        <div id="productFields" class="pp-conditional">
+          <div class="pp-field">
+            <label for="unitsPerMonth">Unità vendute al mese (stima)</label>
+            <input id="unitsPerMonth" type="number" min="1" step="1" value="50" />
+          </div>
+        </div>
+
+        <div id="subscriptionFields" class="pp-conditional">
+          <div class="pp-field">
+            <label for="subscribers">Abbonati attesi</label>
+            <input id="subscribers" type="number" min="1" step="1" value="30" />
+          </div>
+          <div class="pp-field">
+            <label for="churnRate">Churn mensile (%)</label>
+            <input id="churnRate" type="number" min="0" max="100" step="0.1" value="5" />
+          </div>
+        </div>
+
+        <hr />
+
+        <h3>Prezzo attuale / ipotizzato</h3>
+        <p class="pp-help">
+          Inserisci il prezzo che stai usando o che vorresti usare. ProfitPilot ti dirà se è sostenibile.
+        </p>
+        <div class="pp-field">
+          <label for="currentPrice">Prezzo per unità (€)</label>
+          <input id="currentPrice" type="number" min="0" step="0.01" value="50" />
+        </div>
+
+        <div class="pp-actions">
+          <button id="calculateBtn" class="pp-btn-primary">Calcola profitti</button>
+          <button id="saveScenarioBtn" class="pp-btn-secondary">Salva scenario</button>
+        </div>
+      </aside>
+
+      <section class="pp-content">
+        <div class="pp-card">
+          <h2>Risultati</h2>
+          <div id="resultsContainer">
+            <p>Compila i campi a sinistra e clicca <strong>Calcola profitti</strong>.</p>
+          </div>
+          <div class="pp-actions-inline">
+            <button id="printBtn" class="pp-btn-outline">Esporta / Stampa scenario</button>
+          </div>
+        </div>
+
+        <div class="pp-card">
+          <h2>Scenari salvati</h2>
+          <p class="pp-help">
+            Puoi salvare diversi scenari (es. “Coaching base”, “Corso premium”, “SaaS entry-level”) e confrontarli.
+          </p>
+          <div id="savedScenariosContainer"></div>
+        </div>
+
+        <div class="pp-card pp-card-monetization">
+          <h2>Come monetizzare ProfitPilot</h2>
+          <ul>
+            <li><strong>1.</strong> Metti online questa app su un tuo dominio.</li>
+            <li><strong>2.</strong> Aggiungi un paywall (es. Stripe Checkout, Gumroad, Paddle) per l’accesso.</li>
+            <li><strong>3.</strong> Vendi abbonamenti mensili/annuali o licenze lifetime.</li>
+            <li><strong>4.</strong> Offri bundle con consulenze, template, corsi.</li>
+          </ul>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="pp-footer">
+    <p>ProfitPilot – Calcolatore universale di prezzi & profitti. Tutto gira su frontend statico, pronto per il deploy.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
